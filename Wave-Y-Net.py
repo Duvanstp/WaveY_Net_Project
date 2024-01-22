@@ -31,14 +31,14 @@ class Model_UNET(nn.Module):
         self.size_capas = 6
         self.Act = nn.LeakyReLU()
         self.pool_Uniform = nn.MaxPool2d(kernel_size = (2, 2),
-                                         strides = (2, 2),
+                                         stride = (2, 2),
                                          padding = 0)
         self.pool_NoUniform = nn.MaxPool2d(kernel_size = (1, 2),
-                                         strides = (1, 2),
+                                         stride = (1, 2),
                                          padding = 0)
         self.upsample = nn.Upsample(scale_factor=2, mode='nearest')
         
-        
+        ## Aquí vamos a crear los atributos, más reducido usando el seattr
         for step in self.steps:
             if  step == 16:
                 setattr(self, f'B{step}EI', nn.Conv2d(1, step, (3,3), padding=1))
@@ -46,11 +46,13 @@ class Model_UNET(nn.Module):
                 setattr(self, f'B{step}EI', nn.Conv2d(step//2, step, (3,3), padding=1))
             setattr(self, f'B{step}E', nn.Conv2d(step, step, (3,3), padding = 1))
             setattr(self, f'BN{step}', nn.BatchNorm2d(step))
-        
+    
+    # va a ser la conexion residual probar si con imagenes funciona bien
     def res_conection(self, capa1, capa2):
         residual = capa1 + capa2
         return residual
     
+    # Bloque convolucional, normalization y activation, si es el inicial no lleva activacion
     def CBA(self, Capa, BatchNorm, x, is_init = False):
         """
         Capa convolucional,
@@ -68,12 +70,12 @@ class Model_UNET(nn.Module):
         c1 = self.CBA(Capa,BatchNorm, c0)
         c2 = self.CBA(Capa,BatchNorm, c1)
         c3 = self.CBA(Capa,BatchNorm, c2)
-        c4 = self.CBA(Capa,BatchNorm, res_conection(c3,c1))
+        c4 = self.CBA(Capa,BatchNorm, self.res_conection(c3,c1))
         c5 = self.CBA(Capa,BatchNorm, c4)
-        c6 = self.CBA(Capa,BatchNorm, res_conection(c5,c4))
+        c6 = self.CBA(Capa,BatchNorm, self.res_conection(c5,c4))
         return c6
         
-    def encoder(self,x): # Nota hace falta el maxpoling no uniform3
+    def encoder(self,x): # Nota hace falta el maxpoling no uniforme
         Block1 = self.Block(self.B16E, self.B16EI, self.BN16, x)
         Block2 = self.Block(self.B32E, self.B32EI, self.BN32, Block1)
         Block3 = self.Block(self.B64E, self.B64EI, self.BN64, Block2)
