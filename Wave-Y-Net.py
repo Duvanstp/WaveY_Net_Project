@@ -5,6 +5,7 @@ import numpy as np
 
 
 from torch import nn
+from PIL import Image
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor, Lambda, Compose
@@ -104,8 +105,20 @@ class Model_UNET(nn.Module):
     
     def fit(self):
         pass
-    
 
-        
 WaveY = Model_UNET(input_shape = (1,64,64))
-WaveY
+# WaveY.encoder() Probar con imagen
+
+ruta = r"C:\Users\duvan\Downloads\photo_4969962217801886983_w.jpg"
+imagen = Image.open(ruta)
+# Mostrar información sobre la imagen
+print("Formato:", imagen.format)
+print("Modo:", imagen.mode)
+print("Tamaño:", imagen.size)
+
+print(imagen)
+
+# Mostrar la imagen (opcional)
+imagen.show()
+
+# WaveY.encoder(imagen)

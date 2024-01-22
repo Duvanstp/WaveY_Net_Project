@@ -10,8 +10,6 @@ response = requests.get('http://metanet.stanford.edu/static/search/waveynet/data
 response.raise_for_status()
 train_data = np.load(io.BytesIO(response.content))
 
-print('Middle time')
-
 train_structures                = train_data['structures']
 train_Hy_fields                 = train_data['Hy_fields']
 train_dielectric_permittivities = train_data['dielectric_permittivities']
