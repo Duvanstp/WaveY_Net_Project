@@ -1,14 +1,14 @@
 import numpy as np
 
 #Load the train data
-train_data = np.load('/your/local/path/train_ds.npz')
+train_data = np.load('C:/Folder_Personal/Física/Trabajo de grado/Data_local/train_ds.npz')
 
 train_structures                = train_data['structures']
 train_Hy_fields                 = train_data['Hy_fields']
 train_dielectric_permittivities = train_data['dielectric_permittivities']
 
 #Load the test data
-test_data = np.load('/your/local/path/test_ds.npz')
+test_data = np.load('C:/Folder_Personal/Física/Trabajo de grado/Data_local/test_ds.npz')
 
 test_structures                = test_data['structures']
 test_Hy_fields                 = test_data['Hy_fields']
