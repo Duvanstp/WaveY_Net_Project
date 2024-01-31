@@ -106,7 +106,7 @@ class Model_UNET(nn.Module):
     def fit(self):
         pass
 
-WaveY = Model_UNET(input_shape = (1,64,64))
+WaveY = Model_UNET(input_shape = (1,64,256))
 # WaveY.encoder() Probar con imagen
 
 ruta = r"C:\Users\duvan\Downloads\photo_4969962217801886983_w.jpg"
