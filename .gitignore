@@ -1,1 +1,5 @@
-Data_local/
+__pycache__/
+**__pycache__/
+img_train_results/
+weights_model/
+pruebas_locales.py
